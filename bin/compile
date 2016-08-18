@@ -32,10 +32,10 @@ install_maven ${CACHE_DIR} ${BUILD_DIR}
 if [ -n "$MAVEN_SETTINGS_PATH" ]; then
   MAVEN_SETTINGS_OPT="-s $MAVEN_SETTINGS_PATH"
 elif [ -n "$MAVEN_SETTINGS_URL" ]; then
-  status_pending "Installing settings.xml"
+  echo "Installing settings.xml"
   mkdir -p .m2
   curl --retry 3 --silent --max-time 10 --location $MAVEN_SETTINGS_URL --output .m2/settings.xml
-  status_done
+  echo "Done"
   MAVEN_SETTINGS_OPT="-s $CACHE_DIR/.m2/settings.xml"
 elif [ -f $BUILD_DIR/settings.xml ]; then
   MAVEN_SETTINGS_OPT="-s $BUILD_DIR/settings.xml"
@@ -54,7 +54,7 @@ mvnOpts="${mvnOpts}${MAVEN_SETTINGS_OPT:+ $MAVEN_SETTINGS_OPT}"
 mvnOpts="${mvnOpts} ${MAVEN_CUSTOM_OPTS:-"-DskipTests"}"
 mvnOpts="${mvnOpts} ${MAVEN_CUSTOM_GOALS:-"clean dependency:list install"}"
 
-status "Executing: mvn ${mvnOpts}"
+echo "Executing: mvn ${mvnOpts}"
 $CACHE_DIR/.maven/bin/mvn -DoutputFile=target/mvn-dependency-list.log ${mvnOpts} | indent
 
 if [ "${PIPESTATUS[*]}" != "0 0" ]; then
