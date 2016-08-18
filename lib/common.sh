@@ -24,11 +24,11 @@ install_maven() {
 
   mavenVersion=${definedMavenVersion:-$DEFAULT_MAVEN_VERSION}
 
-  status_pending "Installing Maven ${mavenVersion}"
+  echo "Installing Maven ${mavenVersion}"
   if is_supported_maven_version ${mavenVersion}; then
     mavenUrl="http://lang-jvm.s3.amazonaws.com/maven-${mavenVersion}.tar.gz"
     download_maven ${mavenUrl} ${installDir} ${mavenHome}
-    status_done
+    echo "Done"
   else
     error_return "Error, you have defined an unsupported Maven version in the system.properties file.
 The default supported version is ${DEFAULT_MAVEN_VERSION}"
